@@ -11,9 +11,7 @@
 </template>
 
 <script>
-import FriendContact from './components/FriendContact.vue'
 export default{
-  components: { FriendContact },
         data(){
             return {
                 friends:[
