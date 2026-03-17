@@ -1,46 +1,87 @@
 
 
 <template>
-<section>
-<header><h1>My Friends</h1></header>
-<ul>
-    <friend-contact></friend-contact>
-    <friend-contact></friend-contact>
-</ul>
-</section>
+  <section>
+    <header><h1>My Friends</h1></header>
+    <new-friend @add-contact="addContact"></new-friend>
+    <ul>
+      <friend-contact
+        v-for="friend in friends"
+        :key="friend.id"
+        :id="friend.id"
+        :name="friend.name"
+        :phone-number="friend.phone"
+        :email-address="friend.email"
+        :favourite="friend.isFavourite"
+        @toggle-favourite="toggleFavouriteStatus"
+        @delete="deleteFriend"
+      ></friend-contact>
+    </ul>
+  </section>
 </template>
 
 <script>
-export default{
-        data(){
-            return {
-                friends:[
-                    {
-                        id:'manuel',
-                        name:'Manuel Lorenz',
-                        phone:'1234567890',
-                        email:'manuel@gmail.com'
-                    },
-                    {
-                        id:'julie',
-                        name:'Julie Jones',
-                        phone:'0987654321',
-                        email:'julie@gmail.com'
-                    }
-                ]
-            }
+import NewFriend from './components/NewFriend.vue';
+export default {
+  components: { NewFriend },
+  data() {
+    return {
+      friends: [
+        {
+          id: "manuel",
+          name: "Manuel Lorenz",
+          phone: "1234567890",
+          email: "manuel@gmail.com",
+          isFavourite: true,
         },
+        {
+          id: "julie",
+          name: "Julie Jones",
+          phone: "0987654321",
+          email: "julie@gmail.com",
+          isFavourite: false,
+        },
+      ],
+    };
+  },
+  methods:{
+    toggleFavouriteStatus(friendId){
+      // alert('Toggle-favourite')
+       const identitfiedFriend= this.friends.find(friend => friend.id === friendId)
+       identitfiedFriend.isFavourite=!identitfiedFriend.isFavourite;
+       console.log(identitfiedFriend);
+    },
+    addContact(name,phone,email){
+      const newFriend={
+        id:new Date().toISOString(),
+        name:name,
+        phone:phone,
+        email:email,
+        isFavourite:false
+      };
+      this.friends.push(newFriend);
+    },
+    deleteFriend(friendID){
+      this.friends=this.friends.filter(friend => friend.id != friendID);
     }
+  }
+};
 </script>
 
+
+
+
+
+
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Jost&display=swap");
 * {
   box-sizing: border-box;
 }
 
 html {
-  font-family: 'Jost', sans-serif;
+  font-family: "Jost", sans-serif;
 }
 
 body {
@@ -98,5 +139,4 @@ header {
   border-color: #ec3169;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.26);
 }
-
 </style>
